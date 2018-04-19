@@ -238,13 +238,21 @@
           </li>
           <li>
             <a href="#parser" class="toc-h1 toc-link" data-title="parser">Parser</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#config-providers" class="toc-h2 toc-link" data-title="config-providers">Config providers</a>
+                  </li>
+                  <li>
+                    <a href="#detailled-process" class="toc-h2 toc-link" data-title="detailled-process">Detailled process</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#caching" class="toc-h1 toc-link" data-title="caching">Caching</a>
           </li>
       </div>
         <ul class="toc-footer">
-            <li><a href="https://dashboard.weglot.com/register">Sign Up for a Weglot API Key</a></li>
+            <li><a href="https://dashboard.weglot.com/register">Register for a Weglot API Key</a></li>
             <li><a href="https://github.com/weglot">Documentation by Weglot</a></li>
         </ul>
     </div>
@@ -255,6 +263,8 @@
 <p>Weglot is a set of libraries that allows you to quickly and easily use the Weglot API and to translate your website seamlessly and delivers it in any languages. </p>
 
 <p>Our API is following REST guidelines and is HTTP based.</p>
+
+<p>Main feature of Weglot library isn&#39;t the library itself but the <a href="#parser">Parser</a> we provides with it. It permit you to get high-level processing of your HTML page with ease.</p>
 <h1 id='authentication'>Authentication</h1>
 <blockquote>
 <p>To authorize, use this code:</p>
@@ -310,10 +320,10 @@ Make sure to replace <code>my_api_key</code> with your Weglot API key.
 -d <span class="se">\</span>
 <span class="s1">'
 {
-    "l_from": "en",
+   "l_from": "en",
     "l_to": "fr",
     "words": [
-    {
+         {
             "t": "1",
             "w": "This is a blue car"
         },
@@ -335,13 +345,13 @@ Make sure to replace <code>my_api_key</code> with your Weglot API key.
         </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
         </span><span class="s2">"bot"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
         </span><span class="s2">"from_words"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="s2">"This is a blue car"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"This is a black car"</span><span class="w">
+            </span><span class="s2">"This is a blue car"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"This is a black car"</span><span class="w">
         </span><span class="p">],</span><span class="w">
         </span><span class="s2">"to_words"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">  
-      </span><span class="s2">"Il s’agit d’une voiture bleue"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"C'est une voiture noire"</span><span class="w">
-        </span><span class="p">],</span><span class="w">
+            </span><span class="s2">"Il s’agit d’une voiture bleue"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"C'est une voiture noire"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -467,7 +477,79 @@ There is no real "content" for this endpoint, you should only check <code>200</c
 <aside class="warning">
 This is only a check-alive endpoint, don't spam it.
 </aside>
-<h1 id='parser'>Parser</h1><h1 id='caching'>Caching</h1>
+<h1 id='parser'>Parser</h1>
+<p>The Parser allows you to fetch a whole HTML page, to extract sentences &amp; to inject them back in your HTML. It works on top of our library to let us manage every request without bothering you managing communication.</p>
+<h2 id='config-providers'>Config providers</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="k">use</span> <span class="nx">Weglot\Parser\ConfigProvider\ServerConfigProvider</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Weglot\Parser\ConfigProvider\ManualConfigProvider</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Weglot\Client\Api\Enum\BotType</span><span class="p">;</span>
+
+<span class="c1">// Url to parse
+</span><span class="nv">$url</span> <span class="o">=</span> <span class="s1">'https://foo.bar/baz'</span><span class="p">;</span>
+
+<span class="c1">// Manual Config
+</span><span class="nv">$config</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ManualConfigProvider</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="nx">BotType</span><span class="o">::</span><span class="na">HUMAN</span><span class="p">);</span>
+
+<span class="c1">// Config with $_SERVER variables
+</span><span class="nv">$config</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ServerConfigProvider</span><span class="p">();</span>
+
+<span class="c1">// Change title behavior from automatic to manual
+</span><span class="nv">$config</span><span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="s1">'Some title'</span><span class="p">);</span>
+
+<span class="c1">// Change back title behavior to automatic
+</span><span class="nv">$config</span><span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+</code></pre>
+<p>Some of the parameters we usually need in a (Translate query)[#translate] are skipped with config providers, actually we have two of them availables:</p>
+
+<ul>
+<li><code>ManualConfigProvider</code>, data is fetched from what you give to the provider.</li>
+<li><code>ServerConfigProvider</code>, data is fetched inside of the <code>Parser</code> (through <code>loadFromServer()</code> function) from the <code>$_SERVER</code> variable. Be carefull, it won&#39;t work if your environment doesn&#39;t fill it.</li>
+</ul>
+
+<p>In addition to both providers, we have two ways to set the <code>title</code> that we send to Weglot API.
+On both provider construct function, you&#39;ll have a <code>$title</code> variable that is <code>null</code> by default.
+If you let it with the default value, you&#39;ll be in automatic mode.</p>
+
+<p>Like that, the <code>Parser</code> would seek title tag in the HTML page and use it as <code>title</code>.
+If you set it manually, we&#39;ll just use what you&#39;ve put as <code>title</code>.</p>
+
+<aside class="notice">
+You still can change <code>title</code> from automatic to manual by using <code>setTitle</code> function on provider (and reverse, by setting it as <code>null</code>).
+</aside>
+<h2 id='detailled-process'>Detailled process</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="k">use</span> <span class="nx">Weglot\Client\Client</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Weglot\Parser\Parser</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Weglot\Parser\ConfigProvider\ServerConfigProvider</span><span class="p">;</span>
+
+<span class="c1">// Url to parse
+</span><span class="nv">$url</span> <span class="o">=</span> <span class="s1">'https://foo.bar/baz'</span><span class="p">;</span>
+
+<span class="c1">// Config with $_SERVER variables
+</span><span class="nv">$config</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ServerConfigProvider</span><span class="p">();</span>
+
+<span class="c1">// Fetching url content
+</span><span class="nv">$content</span> <span class="o">=</span> <span class="s1">'...'</span><span class="p">;</span>
+
+<span class="c1">// Client
+</span><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">(</span><span class="nb">getenv</span><span class="p">(</span><span class="s1">'WG_API_KEY'</span><span class="p">));</span>
+<span class="nv">$parser</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Parser</span><span class="p">(</span><span class="nv">$client</span><span class="p">,</span> <span class="nv">$config</span><span class="p">);</span>
+
+<span class="c1">// Run the Parser
+</span><span class="nv">$translatedContent</span> <span class="o">=</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">translate</span><span class="p">(</span><span class="nv">$content</span><span class="p">,</span> <span class="s1">'en'</span><span class="p">,</span> <span class="s1">'de'</span><span class="p">);</span>
+</code></pre>
+<p>How it works:</p>
+
+<p>Once you hit the <code>translate</code> function, what the <code>Parser</code> does ? Let&#39;s explain all steps, step by step:</p>
+
+<ol>
+<li>Receiving &amp; setting both original &amp; destination language.</li>
+<li>Depending on your API version, you&#39;ll now pass into <code>ignoredNodes</code> formatter. Basically, <code>ignoredNodes</code> mode is skip some tags into translations by using HTML entities, like that, we would have less sentences sent to Weglot API.</li>
+<li>After that, we&#39;re using a library called <a href="https://github.com/weglot/simple_html_dom"><code>simple_html_dom</code></a> (with some internal tweaks) to fetch all HTML content.</li>
+<li>Then we check if there is blocks you don&#39;t want to be translated (through <code>$excludeBlocks</code> array that you can set in <code>Parser</code> construct). We fetch them all and add a property to make sure we won&#39;t translate them (you can find this property in <code>Parser::ATTRIBUTE_NO_TRANSLATE</code> constant)</li>
+<li>d</li>
+<li>e</li>
+</ol>
+<h1 id='caching'>Caching</h1>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
