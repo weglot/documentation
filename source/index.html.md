@@ -15,13 +15,13 @@ includes:
   - endpoints/header
   - endpoints/translate
   - endpoints/status
-  - resources/header
-  - resources/bottype
-  - resources/wordtype
   - parser/header
   - parser/configProviders
   - parser/detailledProcess
   - caching
+  - resources/header
+  - resources/bottype
+  - resources/wordtype
 
 search: true
 ---
