@@ -18,7 +18,9 @@ includes:
   - resources/header
   - resources/bottype
   - resources/wordtype
-  - parser
+  - parser/header
+  - parser/configProviders
+  - parser/detailledProcess
   - caching
 
 search: true
