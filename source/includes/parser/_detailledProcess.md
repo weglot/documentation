@@ -31,5 +31,7 @@ Once you hit the `translate` function, what the `Parser` does ? Let's explain al
 2. Depending on your API version, you'll now pass into `ignoredNodes` formatter. Basically, `ignoredNodes` mode is skip some tags into translations by using HTML entities, like that, we would have less sentences sent to Weglot API.
 3. After that, we're using a library called [`simple_html_dom`](https://github.com/weglot/simple_html_dom) (with some internal tweaks) to fetch all HTML content.
 4. Then we check if there is blocks you don't want to be translated (through `$excludeBlocks` array that you can set in `Parser` construct). We fetch them all and add a property to make sure we won't translate them (you can find this property in `Parser::ATTRIBUTE_NO_TRANSLATE` constant)
-5. d
-6. e
+5. From now, the real deal start, we run Checkers. Checkers are used to match elements in HTML and to retrieve strings to translate.
+6. And we send all strings without duplicates to API through the [Translate endpoint](#translate) from the library
+7. We're getting response with all translated sentences and apply changes to collected HTML nodes from Checkers through Formatters
+8. Finally, we're returning all the HTML as string with everything translated !
