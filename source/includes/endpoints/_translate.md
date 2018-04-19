@@ -35,18 +35,18 @@ curl -X POST "https://api.weglot.com/translate?api_key=my_api_key" \
 -d \
 '
 {
-	"l_from": "en",
-	"l_to": "fr",
-	"words": [
-    {
-			"t": "1",
-			"w": "This is a blue car"
-		},
-		{
-			"t": "1",
-			"w": "This is a black car"
-		}
-	]
+   "l_from": "en",
+    "l_to": "fr",
+    "words": [
+         {
+            "t": "1",
+            "w": "This is a blue car"
+        },
+        {
+            "t": "1",
+            "w": "This is a black car"
+        }
+    ]
 }'
 ```
 
@@ -54,20 +54,20 @@ curl -X POST "https://api.weglot.com/translate?api_key=my_api_key" \
 
 ```json
 {
-	"succeeded": 1,
-	"answer": {
-		"l_from": "en",
-		"l_to": "fr",
-		"title": "",
-		"bot": 0,
-		"from_words": [
-      "This is a blue car",
-  		"This is a black car"
-		],
-		"to_words": [  
-      "Il s’agit d’une voiture bleue",
-  		"C'est une voiture noire"
-		],
+    "succeeded": 1,
+    "answer": {
+	    "l_from": "en",
+        "l_to": "fr",
+        "title": "",
+        "bot": 0,
+        "from_words": [
+            "This is a blue car",
+            "This is a black car"
+        ],
+        "to_words": [  
+            "Il s’agit d’une voiture bleue",
+            "C'est une voiture noire"
+        ]
 	}
 }
 ```
