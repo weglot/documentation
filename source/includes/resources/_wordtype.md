@@ -14,7 +14,7 @@ Used to defined how a sentence gonna be used.
 
 Short-name | Value | Description
 --------- | -------- | -----------
-GENERIC | 0 | ???
+OTHER | 0 | ???
 TEXT | 1 | ???
 VALUE | 2 | ???
 PLACEHOLDER | 3 | ???
