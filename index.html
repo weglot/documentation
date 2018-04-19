@@ -249,6 +249,22 @@
           </li>
           <li>
             <a href="#caching" class="toc-h1 toc-link" data-title="caching">Caching</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#php" class="toc-h2 toc-link" data-title="php">PHP</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#resources" class="toc-h1 toc-link" data-title="resources">Resources</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#bottype" class="toc-h2 toc-link" data-title="bottype">BotType</a>
+                  </li>
+                  <li>
+                    <a href="#wordtype" class="toc-h2 toc-link" data-title="wordtype">WordType</a>
+                  </li>
+              </ul>
           </li>
       </div>
         <ul class="toc-footer">
@@ -546,10 +562,149 @@ You still can change <code>title</code> from automatic to manual by using <code>
 <li>Depending on your API version, you&#39;ll now pass into <code>ignoredNodes</code> formatter. Basically, <code>ignoredNodes</code> mode is skip some tags into translations by using HTML entities, like that, we would have less sentences sent to Weglot API.</li>
 <li>After that, we&#39;re using a library called <a href="https://github.com/weglot/simple_html_dom"><code>simple_html_dom</code></a> (with some internal tweaks) to fetch all HTML content.</li>
 <li>Then we check if there is blocks you don&#39;t want to be translated (through <code>$excludeBlocks</code> array that you can set in <code>Parser</code> construct). We fetch them all and add a property to make sure we won&#39;t translate them (you can find this property in <code>Parser::ATTRIBUTE_NO_TRANSLATE</code> constant)</li>
-<li>d</li>
-<li>e</li>
+<li>From now, the real deal start, we run Checkers. Checkers are used to match elements in HTML and to retrieve strings to translate.</li>
+<li>And we send all strings without duplicates to API through the <a href="#translate">Translate endpoint</a> from the library</li>
+<li>We&#39;re getting response with all translated sentences and apply changes to collected HTML nodes from Checkers through Formatters</li>
+<li>Finally, we&#39;re returning all the HTML as string with everything translated !</li>
 </ol>
 <h1 id='caching'>Caching</h1>
+<p>Depending on library implementation we added caching to requests that we send to Weglot API.</p>
+<h2 id='php'>PHP</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="c1">// Redis init
+</span><span class="nv">$redis</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Redis</span><span class="p">([</span>
+    <span class="s1">'scheme'</span> <span class="o">=&gt;</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">'REDIS_SCHEME'</span><span class="p">),</span>
+    <span class="s1">'host'</span>   <span class="o">=&gt;</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">'REDIS_HOST'</span><span class="p">),</span>
+    <span class="s1">'port'</span>   <span class="o">=&gt;</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">'REDIS_PORT'</span><span class="p">),</span>
+<span class="p">]);</span>
+<span class="nv">$redisPool</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PredisCachePool</span><span class="p">(</span><span class="nv">$redis</span><span class="p">);</span>
+
+<span class="c1">// Client
+</span><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">(</span><span class="nb">getenv</span><span class="p">(</span><span class="s1">'WG_API_KEY'</span><span class="p">));</span>
+<span class="nv">$client</span><span class="o">-&gt;</span><span class="na">setCacheItemPool</span><span class="p">(</span><span class="nv">$redisPool</span><span class="p">);</span>
+</code></pre>
+<p>For PHP, we&#39;re following <a href="https://www.php-fig.org/psr/psr-6/">PSR-6</a> standard about caching.</p>
+
+<p>Basically it can plug to any caching provider as long as you&#39;ve <a href="https://www.php-fig.org/psr/psr-6/">PSR-6</a> adaptor.
+You can find (many of theses adaptors in this list](http://www.php-cache.com/en/latest/).</p>
+
+<p>You&#39;ll find an example for a Redis server with Predis library on right pane.</p>
+<h1 id='resources'>Resources</h1><h2 id='bottype'>BotType</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="k">use</span> <span class="nx">Weglot\Client\Api\Enum\BotType</span><span class="p">;</span>
+
+<span class="c1">// You can find all theses values through BotType abstract class
+</span><span class="nv">$botType</span> <span class="o">=</span> <span class="nx">BotType</span><span class="o">::</span><span class="na">HUMAN</span><span class="p">;</span>
+
+<span class="c1">// ...
+</span></code></pre>
+<p>Used to defined how a sentence gonna be used.</p>
+
+<table><thead>
+<tr>
+<th>Short-name</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>HUMAN</td>
+<td>0</td>
+<td>???</td>
+</tr>
+<tr>
+<td>OTHER</td>
+<td>1</td>
+<td>???</td>
+</tr>
+<tr>
+<td>GOOGLE</td>
+<td>2</td>
+<td>???</td>
+</tr>
+<tr>
+<td>BING</td>
+<td>3</td>
+<td>???</td>
+</tr>
+<tr>
+<td>YAHOO</td>
+<td>4</td>
+<td>???</td>
+</tr>
+<tr>
+<td>BAIDU</td>
+<td>5</td>
+<td>???</td>
+</tr>
+<tr>
+<td>YANDEX</td>
+<td>6</td>
+<td>???</td>
+</tr>
+</tbody></table>
+<h2 id='wordtype'>WordType</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="k">use</span> <span class="nx">Weglot\Client\Api\Enum\WordType</span><span class="p">;</span>
+
+<span class="c1">// You can find all theses values through WordType abstract class
+</span><span class="nv">$wordType</span> <span class="o">=</span> <span class="nx">WordType</span><span class="o">::</span><span class="na">GENERIC</span><span class="p">;</span>
+
+<span class="c1">// ...
+</span></code></pre>
+<p>Used to defined how a sentence gonna be used.</p>
+
+<table><thead>
+<tr>
+<th>Short-name</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>GENERIC</td>
+<td>0</td>
+<td>???</td>
+</tr>
+<tr>
+<td>TEXT</td>
+<td>1</td>
+<td>???</td>
+</tr>
+<tr>
+<td>VALUE</td>
+<td>2</td>
+<td>???</td>
+</tr>
+<tr>
+<td>PLACEHOLDER</td>
+<td>3</td>
+<td>???</td>
+</tr>
+<tr>
+<td>META_CONTENT</td>
+<td>4</td>
+<td>???</td>
+</tr>
+<tr>
+<td>IFRAME_SRC</td>
+<td>5</td>
+<td>???</td>
+</tr>
+<tr>
+<td>IMG_SRC</td>
+<td>6</td>
+<td>???</td>
+</tr>
+<tr>
+<td>IMG_ALT</td>
+<td>7</td>
+<td>???</td>
+</tr>
+<tr>
+<td>PDF_HREF</td>
+<td>8</td>
+<td>???</td>
+</tr>
+</tbody></table>
+
       </div>
       <div class="dark-box">
           <div class="lang-selector">
