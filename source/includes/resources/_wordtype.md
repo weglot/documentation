@@ -5,7 +5,7 @@
 use Weglot\Client\Api\Enum\WordType;
 
 // You can find all theses values through WordType abstract class
-$wordType = WordType::GENERIC;
+$wordType = WordType::TEXT;
 
 // ...
 ```
