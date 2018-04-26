@@ -581,13 +581,24 @@ You still can change <code>title</code> from automatic to manual by using <code>
 <span class="c1">// Client
 </span><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">(</span><span class="nb">getenv</span><span class="p">(</span><span class="s1">'WG_API_KEY'</span><span class="p">));</span>
 <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">setCacheItemPool</span><span class="p">(</span><span class="nv">$redisPool</span><span class="p">);</span>
+
+<span class="c1">// setting expire
+</span><span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getCache</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setExpire</span><span class="p">(</span><span class="mi">86400</span><span class="p">);</span>
 </code></pre>
 <p>For PHP, we&#39;re following <a href="https://www.php-fig.org/psr/psr-6/">PSR-6</a> standard about caching.</p>
 
 <p>Basically it can plug to any caching provider as long as you&#39;ve <a href="https://www.php-fig.org/psr/psr-6/">PSR-6</a> adaptor.
-You can find (many of theses adaptors in this list](http://www.php-cache.com/en/latest/).</p>
+You can find <a href="http://www.php-cache.com/en/latest/">many of theses adaptors in this list</a>.</p>
 
 <p>You&#39;ll find an example for a Redis server with Predis library on right pane.</p>
+<h3 id='expire'>Expire</h3>
+<p>When you use cache we set an expire timer on every items.
+By default, this timer is set to 604800 seconds but you can change it anytime you want by using <code>setExpire(int $seconds)</code> method.</p>
+<h3 id='granularity'>Granularity</h3>
+<p>The cache has changed a bit since its first version.
+Originally we used to put the whole request into cache and use cache params to generate an unique ID.
+We removed that behavior to focus on more specific caching for each Endpoints.
+For example, on Translate endpoint, we&#39;re now caching each words to make sure our request (if there is one) is small as possible.</p>
 <h1 id='resources'>Resources</h1><h2 id='bottype'>BotType</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">Weglot\Client\Api\Enum\BotType</span><span class="p">;</span>
 
