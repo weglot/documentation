@@ -66,8 +66,8 @@ curl -X POST "https://api.weglot.com/translate?api_key=my_api_key" \
       "This is a black car"
    ],
    "to_words":[  
-      "C\u0027est une voiture bleue",
-      "C\u0027est une voiture noire"
+      "C'est une voiture bleue",
+      "C'est une voiture noire"
    ]
 }
 ```
