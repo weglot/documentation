@@ -336,9 +336,11 @@ Make sure to replace <code>my_api_key</code> with your Weglot API key.
 -d <span class="se">\</span>
 <span class="s1">'
 {
-   "l_from": "en",
-    "l_to": "fr",
-    "words": [
+  "l_from": "en",
+  "l_to": "fr",
+  "title": "My awesome page",
+  "request_url": "https://www.website.com/",
+   "words": [
          {
             "t": "1",
             "w": "This is a blue car"
@@ -353,22 +355,20 @@ Make sure to replace <code>my_api_key</code> with your Weglot API key.
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"succeeded"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"answer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"l_from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"en"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"l_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fr"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"bot"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"from_words"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="s2">"This is a blue car"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"This is a black car"</span><span class="w">
-        </span><span class="p">],</span><span class="w">
-        </span><span class="s2">"to_words"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">  
-            </span><span class="s2">"Il s’agit d’une voiture bleue"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"C'est une voiture noire"</span><span class="w">
-        </span><span class="p">]</span><span class="w">
-    </span><span class="p">}</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">  
+   </span><span class="s2">"l_from"</span><span class="p">:</span><span class="s2">"en"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"l_to"</span><span class="p">:</span><span class="s2">"fr"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"title"</span><span class="p">:</span><span class="s2">"My awesome page"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"request_url"</span><span class="p">:</span><span class="s2">"https:</span><span class="se">\/\/</span><span class="s2">www.website.com</span><span class="se">\/</span><span class="s2">"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bot"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"from_words"</span><span class="p">:[</span><span class="w">  
+      </span><span class="s2">"This is a blue car"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"This is a black car"</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"to_words"</span><span class="p">:[</span><span class="w">  
+      </span><span class="s2">"C'est une voiture bleue"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"C'est une voiture noire"</span><span class="w">
+   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint retrieves all translations. It takes an array of sentences in an original languages in input and output the same array of sentences but translated in another languages.</p>
@@ -409,7 +409,7 @@ Make sure to replace <code>my_api_key</code> with your Weglot API key.
 </tr>
 <tr>
 <td>bot</td>
-<td>true</td>
+<td>false</td>
 <td>link to user agent : check at <a href="#bottype">BotType resource</a> for more details</td>
 </tr>
 <tr>
@@ -431,39 +431,31 @@ Make sure to replace <code>my_api_key</code> with your Weglot API key.
 </tr>
 </thead><tbody>
 <tr>
-<td>succeeded</td>
-<td>true if pass, false if not</td>
-</tr>
-<tr>
-<td>answer</td>
-<td>content of answer as JSON</td>
-</tr>
-<tr>
-<td>answer[l_from]</td>
+<td>l_from</td>
 <td>ISO 639-1 code of the original language</td>
 </tr>
 <tr>
-<td>answer[l_to]</td>
+<td>l_to</td>
 <td>ISO 639-1 code of the destination language</td>
 </tr>
 <tr>
-<td>answer[title]</td>
+<td>title</td>
 <td>the title of the page where these sentences come from</td>
 </tr>
 <tr>
-<td>answer[request_url]</td>
+<td>request_url</td>
 <td>the URL where the request is from</td>
 </tr>
 <tr>
-<td>answer[bot]</td>
+<td>bot</td>
 <td>link to user agent : check at <a href="#bottype">BotType resource</a> for more details</td>
 </tr>
 <tr>
-<td>answer[from_words]</td>
-<td>array of sentence in original language. Each words contains 2 parameters</td>
+<td>from_words</td>
+<td>array of sentence in original language.</td>
 </tr>
 <tr>
-<td>answer[to_words]</td>
+<td>to_words</td>
 <td>array of sentence in destination language. This is the important part !</td>
 </tr>
 </tbody></table>
