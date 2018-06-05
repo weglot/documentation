@@ -100,5 +100,5 @@ l_to | ISO 639-1 code of the destination language
 title | the title of the page where these sentences come from
 request_url | the URL where the request is from
 bot | link to user agent : check at [BotType resource](#bottype) for more details
-from_words | array of sentence in original language. Each words contains 2 parameters 
+from_words | array of sentence in original language.
 to_words | array of sentence in destination language. This is the important part !
