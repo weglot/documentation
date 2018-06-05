@@ -35,9 +35,11 @@ curl -X POST "https://api.weglot.com/translate?api_key=my_api_key" \
 -d \
 '
 {
-   "l_from": "en",
-    "l_to": "fr",
-    "words": [
+  "l_from": "en",
+  "l_to": "fr",
+  "title": "My awesome page",
+  "request_url": "https://www.website.com/",
+   "words": [
          {
             "t": "1",
             "w": "This is a blue car"
@@ -53,22 +55,20 @@ curl -X POST "https://api.weglot.com/translate?api_key=my_api_key" \
 > The above command returns JSON structured like this:
 
 ```json
-{
-    "succeeded": 1,
-    "answer": {
-	    "l_from": "en",
-        "l_to": "fr",
-        "title": "",
-        "bot": 0,
-        "from_words": [
-            "This is a blue car",
-            "This is a black car"
-        ],
-        "to_words": [  
-            "Il s’agit d’une voiture bleue",
-            "C'est une voiture noire"
-        ]
-	}
+{  
+   "l_from":"en",
+   "l_to":"fr",
+   "title":"My awesome page",
+   "request_url":"https:\/\/www.website.com\/",
+   "bot":0,
+   "from_words":[  
+      "This is a blue car",
+      "This is a black car"
+   ],
+   "to_words":[  
+      "C\u0027est une voiture bleue",
+      "C\u0027est une voiture noire"
+   ]
 }
 ```
 
@@ -87,7 +87,7 @@ l_to | true | ISO 639-1 code of the destination language
 words | true | array of sentence in original language. Each words contains 2 parameters 
 words\[t\] | true | the type of the word : check at [WordType resource](#wordtype) for more details
 words\[w\] | true | the sentence to translate
-bot | true | link to user agent : check at [BotType resource](#bottype) for more details
+bot | false | link to user agent : check at [BotType resource](#bottype) for more details
 request_url | true | the URL where the request is from
 title | false | the title of the page where these sentences come from
 
@@ -95,12 +95,10 @@ title | false | the title of the page where these sentences come from
 
 Parameter  | Description
 --------- | -----------
-succeeded | true if pass, false if not
-answer | content of answer as JSON
-answer\[l_from\] | ISO 639-1 code of the original language
-answer\[l_to\] | ISO 639-1 code of the destination language
-answer\[title\] | the title of the page where these sentences come from
-answer\[request_url\] | the URL where the request is from
-answer\[bot\] | link to user agent : check at [BotType resource](#bottype) for more details
-answer\[from_words\] | array of sentence in original language. Each words contains 2 parameters 
-answer\[to_words\] | array of sentence in destination language. This is the important part !
+l_from | ISO 639-1 code of the original language
+l_to | ISO 639-1 code of the destination language
+title | the title of the page where these sentences come from
+request_url | the URL where the request is from
+bot | link to user agent : check at [BotType resource](#bottype) for more details
+from_words | array of sentence in original language. Each words contains 2 parameters 
+to_words | array of sentence in destination language. This is the important part !
